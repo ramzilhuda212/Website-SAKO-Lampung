@@ -48,6 +48,12 @@
             background-position: 0 0,15px 15px;
         }
     </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://nzcmvlhoanfvvrgtrozo.supabase.co/rest/v1/';
+  const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sako-gold selection:text-white">
 
@@ -835,14 +841,34 @@
         });
 
         // Certificate Verification Demo
-        function verifyCertificate() {
-            const code = document.getElementById('cert-code').value.trim();
-            const resultBox = document.getElementById('cert-result');
-            
-            if (code === '') {
-                alert('Silakan masukkan nomor sertifikat terlebih dahulu.');
-                return;
-            }
+        async function verifyCertificate() {
+    const code = document.getElementById('cert-code').value.trim();
+    const resultBox = document.getElementById('cert-result');
+    
+    if (!code) {
+        alert('Silakan masukkan nomor sertifikat!');
+        return;
+    }
+
+    // Mengambil data langsung dari Supabase
+    const { data, error } = await _supabase
+        .from('sertifikat')
+        .select('*')
+        .eq('nomor_sertifikat', code)
+        .single();
+
+    if (error || !data) {
+        alert('Sertifikat tidak ditemukan atau tidak valid.');
+        resultBox.classList.add('hidden');
+        return;
+    }
+
+    // Menampilkan data jika ditemukan
+    document.getElementById('res-nama').innerText = data.nama_peserta;
+    document.getElementById('res-kegiatan').innerText = data.nama_kegiatan;
+    document.getElementById('res-tanggal').innerText = data.tanggal_terbit;
+    resultBox.classList.remove('hidden');
+}
 
             // Mock Data Output
             resultBox.classList.remove('hidden');
