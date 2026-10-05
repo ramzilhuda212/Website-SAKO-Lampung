@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- SheetJS untuk Export Data ke Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<!-- html2pdf untuk Generator Cetak PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin | SAKO Pramuka SIT Lampung</title>
@@ -225,6 +230,9 @@
                     <button onclick="openModalPendaftar()" class="px-4 py-2.5 rounded-xl bg-sako-green text-white text-xs font-bold hover:bg-sako-darkgreen transition flex items-center gap-2 shadow-sm">
                         <i class="fa-solid fa-plus"></i> Tambah Data Manual
                     </button>
+                    <button onclick="exportPendaftarExcel()" class="px-4 py-2.5 rounded-xl bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 transition flex items-center gap-2 shadow-sm">
+    <i class="fa-solid fa-file-excel text-amber-300"></i> Export Excel
+</button>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -647,33 +655,28 @@
 
         // ================= 3. TERBIT SERTIFIKAT =================
         async function loadSertifikat() {
-            const container = document.getElementById('table-sertifikat');
-            const { data, error } = await _supabase.from('sertifikat').select('*').order('id', { ascending: false });
+    const container = document.getElementById('table-sertifikat');
+    const { data, error } = await _supabase.from('sertifikat').select('*').order('id', { ascending: false });
 
-            if (error || !data || data.length === 0) {
-                container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada sertifikat diterbitkan.</td></tr>';
-                return;
-            }
+    if (error || !data || data.length === 0) {
+        container.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada sertifikat diterbitkan.</td></tr>';
+        return;
+    }
 
-            container.innerHTML = data.map(s => `
-                <tr class="hover:bg-slate-50 border-b border-slate-100">
-                    <td class="p-3 font-mono text-sako-green font-bold">${s.nomor_sertifikat}</td>
-                    <td class="p-3 font-semibold text-slate-800">${s.nama_peserta}</td>
-                    <td class="p-3 text-slate-600">${s.nama_kegiatan}</td>
-                    <td class="p-3 text-slate-500">${s.tanggal_terbit}</td>
-                    <td class="p-3 text-center">
-                        <div class="flex items-center justify-center gap-1.5">
-                            <button onclick='editSertifikat(${JSON.stringify(s)})' class="p-2 rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-100 transition" title="Sunting">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
-                            <button onclick="deleteData('sertifikat', ${s.id}, loadSertifikat)" class="p-2 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 transition" title="Hapus">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
+    container.innerHTML = data.map(s => `
+        <tr class="hover:bg-slate-50 border-b border-slate-100">
+            <td class="p-3 font-mono text-sako-green font-bold">${s.nomor_sertifikat}</td>
+            <td class="p-3 font-semibold text-slate-800">${s.nama_peserta}</td>
+            <td class="p-3 text-slate-600">${s.nama_kegiatan}</td>
+            <td class="p-3 text-slate-500">${s.tanggal_terbit}</td>
+            <td class="p-3 text-center">
+                <button onclick="downloadPDFSertifikat('${s.nama_peserta}', '${s.nomor_sertifikat}', '${s.nama_kegiatan}', '${s.tanggal_terbit}')" class="p-2 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition" title="Cetak PDF">
+                    <i class="fa-solid fa-file-pdf text-base"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
 
         function openModalSertifikat() {
             document.getElementById('cert-id').value = '';
@@ -817,6 +820,78 @@
         window.addEventListener('DOMContentLoaded', () => {
             checkAuth();
         });
+        // Fungsi Export Data Pendaftar ke File Excel
+async function exportPendaftarExcel() {
+    const { data, error } = await _supabase.from('pendaftaran').select('*').order('id', { ascending: false });
+
+    if (error || !data || data.length === 0) {
+        alert('Tidak ada data pendaftar untuk di-export.');
+        return;
+    }
+
+    // Format susunan kolom Excel
+    const formattedData = data.map((item, index) => ({
+        "No": index + 1,
+        "No. Registrasi": item.no_registrasi,
+        "Nama Lengkap": item.nama_lengkap,
+        "Asal Sekolah": item.asal_sekolah,
+        "Kabupaten/Kota": item.kabupaten,
+        "Tingkat": item.tingkat,
+        "WhatsApp": item.no_whatsapp
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Data Pendaftar");
+
+    // Download file .xlsx
+    XLSX.writeFile(workbook, `Data_Pendaftar_SAKO_SIT_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+// Fungsi Download / Cetak PDF Sertifikat Peserta
+function downloadPDFSertifikat(nama, nomor, kegiatan, tanggal) {
+    const element = document.createElement('div');
+    element.className = 'p-10 text-center font-sans border-8 border-sako-green bg-white text-slate-800 relative';
+    element.style.width = '800px';
+    element.style.margin = '0 auto';
+
+    element.innerHTML = `
+        <div style="border: 2px solid #f59e0b; padding: 40px;">
+            <h1 style="font-size: 28px; font-weight: 800; color: #0a3f24; margin-bottom: 5px;">SAKO PRAMUKA SIT LAMPUNG</h1>
+            <p style="font-size: 12px; color: #0f5b35; font-weight: 700; letter-spacing: 2px;">SERTIFIKAT PENGHARGAAN</p>
+            <p style="font-size: 11px; font-family: monospace; color: #64748b; margin-top: 5px;">Nomor: ${nomor}</p>
+            
+            <div style="margin: 40px 0;">
+                <p style="font-size: 12px; color: #475569;">Diberikan dengan bangga kepada:</p>
+                <h2 style="font-size: 26px; font-weight: 700; color: #0a3f24; margin: 10px 0; border-bottom: 2px solid #f59e0b; display: inline-block; padding-bottom: 5px;">${nama}</h2>
+                <p style="font-size: 12px; color: #475569; margin-top: 10px;">Atas partisipasi aktif sebagai peserta dalam kegiatan:</p>
+                <h3 style="font-size: 16px; font-weight: 700; color: #0f5b35; margin-top: 5px;">${kegiatan}</h3>
+            </div>
+
+            <div style="margin-top: 40px; display: flex; justify-between; align-items: end; text-align: center; font-size: 11px;">
+                <div>
+                    <p style="color: #64748b;">Diterbitkan Pada:</p>
+                    <p style="font-weight: 700;">${tanggal}</p>
+                </div>
+                <div>
+                    <p style="color: #64748b;">Pimpinan SAKO SIT Lampung</p>
+                    <div style="height: 40px;"></div>
+                    <p style="font-weight: 700; text-decoration: underline;">Ketua Sako Wilayah</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const opt = {
+        margin:       0.5,
+        filename:     `Sertifikat_${nama.replace(/\s+/g, '_')}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+}
     </script>
 </body>
 </html>
