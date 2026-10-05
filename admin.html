@@ -130,6 +130,19 @@
         const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Proteksi Kata Sandi Admin Sederhana
+const PASSWORD_ADMIN = "sako2026"; // Anda bisa mengganti kata sandi ini kapan saja
+
+if (sessionStorage.getItem("admin_login") !== "true") {
+    const inputPass = prompt("Masukkan Kata Sandi Admin SAKO SIT Lampung:");
+    if (inputPass === PASSWORD_ADMIN) {
+        sessionStorage.setItem("admin_login", "true");
+    } else {
+        alert("Kata sandi salah! Akses ditolak.");
+        window.location.href = "index.html";
+    }
+}
+
         // Tab Switcher
         function switchTab(tab) {
             ['pendaftar', 'sertifikat', 'gudep'].forEach(t => {
