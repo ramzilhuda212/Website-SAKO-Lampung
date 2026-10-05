@@ -3,222 +3,544 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - SAKO SIT Lampung</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard Admin | SAKO Pramuka SIT Lampung</title>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sako: {
+                            green: '#0f5b35',
+                            darkgreen: '#0a3f24',
+                            gold: '#f59e0b',
+                            goldhover: '#d97706'
+                        }
+                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], heading: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = 'https://nzcmvlhoanfvvrgtrozo.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
+      const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
-    <!-- Header Admin -->
-    <header class="bg-emerald-800 text-white py-4 px-6 shadow-md flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <span class="text-2xl">⚙️</span>
-            <div>
-                <h1 class="font-bold text-lg leading-tight">Dashboard Admin SAKO SIT</h1>
-                <p class="text-xs text-emerald-200">Pengelolaan Data & Sertifikat</p>
+    <!-- MODAL LOGIN PIN -->
+    <div id="login-modal" class="fixed inset-0 bg-sako-darkgreen/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center">
+            <div class="w-16 h-16 bg-emerald-100 text-sako-green rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 font-black">
+                🔒
             </div>
-        </div>
-        <a href="index.html" class="text-xs bg-emerald-700 hover:bg-emerald-600 px-3 py-2 rounded-lg transition">
-            <i class="fa-solid fa-globe mr-1"></i> Lihat Web Utama
-        </a>
-    </header>
-
-    <div class="max-w-6xl mx-auto p-4 md:p-6">
-        <!-- Navigation Tabs -->
-        <div class="flex space-x-2 border-b border-slate-300 mb-6">
-            <button onclick="switchTab('pendaftar')" id="tab-pendaftar" class="px-4 py-2 text-sm font-semibold border-b-2 border-emerald-600 text-emerald-800 focus:outline-none">
-                📋 Data Pendaftar
-            </button>
-            <button onclick="switchTab('sertifikat')" id="tab-sertifikat" class="px-4 py-2 text-sm font-semibold text-slate-500 hover:text-emerald-800 focus:outline-none">
-                📜 Tambah Sertifikat
-            </button>
-            <button onclick="switchTab('gudep')" id="tab-gudep" class="px-4 py-2 text-sm font-semibold text-slate-500 hover:text-emerald-800 focus:outline-none">
-                🏫 Tambah Gudep
-            </button>
-        </div>
-
-        <!-- TAB 1: Data Pendaftar -->
-        <div id="section-pendaftar" class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="font-bold text-slate-700">Daftar Peserta Kegiatan</h2>
-                <button onclick="loadPendaftar()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded border">
-                    🔄 Refresh Data
-                </button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-600">
-                    <thead class="bg-slate-50 text-slate-700 uppercase font-bold border-b">
-                        <tr>
-                            <th class="p-3">No. Reg</th>
-                            <th class="p-3">Nama</th>
-                            <th class="p-3">Asal Sekolah</th>
-                            <th class="p-3">Kab/Kota</th>
-                            <th class="p-3">Tingkat</th>
-                            <th class="p-3">WhatsApp</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-pendaftar">
-                        <tr><td colspan="6" class="p-4 text-center">Memuat data...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- TAB 2: Tambah Sertifikat -->
-        <div id="section-sertifikat" class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hidden max-w-lg mx-auto">
-            <h2 class="font-bold text-slate-700 mb-4">Input Sertifikat Baru</h2>
-            <form onsubmit="addSertifikat(event)" class="space-y-4 text-sm">
-                <div>
-                    <label class="block font-semibold mb-1">Nomor Sertifikat</label>
-                    <input type="text" id="cert-num" required placeholder="Contoh: SAKO-2026-00128" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-1">Nama Peserta</label>
-                    <input type="text" id="cert-name" required placeholder="Nama Lengkap" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-1">Nama Kegiatan</label>
-                    <input type="text" id="cert-event" required placeholder="Kemah Akbar / Gladian Pemimpin Satuan" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-1">Tanggal Terbit</label>
-                    <input type="date" id="cert-date" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg transition">
-                    Simpan Sertifikat
+            <h2 class="font-heading font-bold text-xl text-sako-darkgreen mb-1">Akses Admin SAKO</h2>
+            <p class="text-xs text-slate-500 mb-6">Masukkan PIN Keamanan untuk mengelola database</p>
+            <form onsubmit="checkPin(event)" class="space-y-4">
+                <input type="password" id="pin-input" maxlength="6" placeholder="Masukkan 6 digit PIN" class="w-full text-center text-2xl font-bold tracking-widest py-3 border rounded-xl focus:ring-2 focus:ring-sako-green focus:outline-none" required>
+                <p id="pin-error" class="text-red-500 text-xs hidden">PIN Salah! Coba lagi.</p>
+                <button type="submit" class="w-full py-3 bg-sako-green text-white font-bold rounded-xl hover:bg-sako-darkgreen transition text-sm">
+                    Masuk Dashboard
                 </button>
             </form>
-        </div>
-
-        <!-- TAB 3: Tambah Gudep -->
-        <div id="section-gudep" class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 hidden max-w-lg mx-auto">
-            <h2 class="font-bold text-slate-700 mb-4">Tambah Gugus Depan Baru</h2>
-            <form onsubmit="addGudep(event)" class="space-y-4 text-sm">
-                <div>
-                    <label class="block font-semibold mb-1">Nama Sekolah / SIT</label>
-                    <input type="text" id="gudep-name" required placeholder="Contoh: SDIT Mutiara Hati" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-1">Nomor Gudep</label>
-                    <input type="text" id="gudep-no" required placeholder="Contoh: 03.045" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-1">Kabupaten / Kota</label>
-                    <input type="text" id="gudep-kab" required placeholder="Contoh: Lampung Selatan" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-semibold mb-1">Jumlah Anggota</label>
-                        <input type="number" id="gudep-anggota" value="0" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Jumlah Pembina</label>
-                        <input type="number" id="gudep-pembina" value="0" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg transition">
-                    Simpan Gudep
-                </button>
-            </form>
+            <p class="text-[10px] text-slate-400 mt-4">PIN Default: <span class="font-mono font-bold">123456</span></p>
         </div>
     </div>
 
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="dashboard-content" class="hidden min-h-screen flex flex-col md:flex-row">
+        <!-- SIDEBAR -->
+        <aside class="w-full md:w-64 bg-sako-darkgreen text-white p-6 flex flex-col justify-between shrink-0">
+            <div>
+                <div class="flex items-center gap-3 mb-8 pb-4 border-b border-emerald-800">
+                    <div class="w-10 h-10 rounded-xl bg-sako-gold text-sako-darkgreen flex items-center justify-center font-black text-xl">🏕️</div>
+                    <div>
+                        <h1 class="font-heading font-bold text-sm leading-tight text-white">SAKO SIT LAMPUNG</h1>
+                        <p class="text-[10px] text-sako-gold uppercase tracking-wider font-semibold">Panel Administrator</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-1.5 text-xs font-semibold">
+                    <button onclick="switchTab('berita')" id="btn-tab-berita" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-800 text-white transition">
+                        <i class="fa-solid fa-newspaper w-4"></i> Kelola Berita
+                    </button>
+                    <button onclick="switchTab('gudep')" id="btn-tab-gudep" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-emerald-200 hover:bg-emerald-900 transition">
+                        <i class="fa-solid fa-school w-4"></i> Kelola Gudep
+                    </button>
+                    <button onclick="switchTab('sertifikat')" id="btn-tab-sertifikat" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-emerald-200 hover:bg-emerald-900 transition">
+                        <i class="fa-solid fa-award w-4"></i> Terbit Sertifikat
+                    </button>
+                    <button onclick="switchTab('pendaftaran')" id="btn-tab-pendaftaran" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-emerald-200 hover:bg-emerald-900 transition">
+                        <i class="fa-solid fa-users w-4"></i> Data Pendaftar
+                    </button>
+                </nav>
+            </div>
+
+            <div class="pt-6 border-t border-emerald-800 space-y-2">
+                <a href="index.html" target="_blank" class="flex items-center gap-2 text-xs text-emerald-300 hover:text-white transition px-2 py-1">
+                    <i class="fa-solid fa-globe"></i> Lihat Website Utama
+                </a>
+                <button onclick="logout()" class="w-full text-left flex items-center gap-2 text-xs text-red-300 hover:text-red-100 transition px-2 py-1">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <main class="flex-1 p-6 lg:p-10 overflow-y-auto">
+            
+            <!-- TAB 1: KELOLA BERITA -->
+            <section id="tab-berita" class="tab-content space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="font-heading font-extrabold text-2xl text-sako-darkgreen">Manajemen Berita</h2>
+                        <p class="text-xs text-slate-500">Tambah dan hapus berita/pengumuman di website</p>
+                    </div>
+                </div>
+
+                <!-- Form Tambah Berita -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-sm text-sako-darkgreen mb-4"><i class="fa-solid fa-plus-circle text-sako-green mr-1"></i> Tambah Berita Baru</h3>
+                    <form onsubmit="addBerita(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="md:col-span-2">
+                            <label class="block font-semibold mb-1">Judul Berita</label>
+                            <input type="text" id="b-judul" required placeholder="Contoh: Kemah Ukhuwah SAKO SIT Lampung 2026" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Kategori</label>
+                            <select id="b-kategori" class="w-full px-3 py-2 rounded-xl border bg-white">
+                                <option value="Kegiatan">Kegiatan</option>
+                                <option value="Pelatihan">Pelatihan</option>
+                                <option value="Sosial">Sosial</option>
+                                <option value="Pengumuman">Pengumuman</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Tanggal</label>
+                            <input type="date" id="b-tanggal" required class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block font-semibold mb-1">Ringkasan Berita</label>
+                            <textarea id="b-ringkasan" rows="3" required placeholder="Tuliskan ringkasan singkat kegiatan..." class="w-full px-3 py-2 rounded-xl border"></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" class="px-6 py-2.5 bg-sako-green text-white font-bold rounded-xl hover:bg-sako-darkgreen transition text-xs">
+                                <i class="fa-solid fa-paper-plane mr-1"></i> Publikasikan Berita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tabel Berita -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b bg-slate-50 font-bold text-xs text-slate-700">Daftar Berita Aktif</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 uppercase text-[10px] text-slate-400 border-b">
+                                <tr>
+                                    <th class="p-3">Judul</th>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Tanggal</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-berita">
+                                <tr><td colspan="4" class="p-4 text-center text-slate-400">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: KELOLA GUDEP -->
+            <section id="tab-gudep" class="tab-content space-y-6 hidden">
+                <div>
+                    <h2 class="font-heading font-extrabold text-2xl text-sako-darkgreen">Direktori Gugus Depan</h2>
+                    <p class="text-xs text-slate-500">Kelola daftar sekolah SIT yang terdaftar di SAKO Lampung</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-sm text-sako-darkgreen mb-4"><i class="fa-solid fa-plus-circle text-sako-green mr-1"></i> Tambah Gugus Depan Baru</h3>
+                    <form onsubmit="addGudep(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div>
+                            <label class="block font-semibold mb-1">Nama Sekolah</label>
+                            <input type="text" id="g-sekolah" required placeholder="Contoh: SDIT Ahmad Dahlan" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Nomor Gudep</label>
+                            <input type="text" id="g-nogudep" required placeholder="Contoh: 01.001 - 01.002" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Kabupaten/Kota</label>
+                            <select id="g-kabupaten" class="w-full px-3 py-2 rounded-xl border bg-white">
+                                <option value="Bandar Lampung">Bandar Lampung</option>
+                                <option value="Metro">Metro</option>
+                                <option value="Lampung Selatan">Lampung Selatan</option>
+                                <option value="Lampung Tengah">Lampung Tengah</option>
+                                <option value="Lampung Timur">Lampung Timur</option>
+                                <option value="Pringsewu">Pringsewu</option>
+                                <option value="Pesawaran">Pesawaran</option>
+                                <option value="Tanggamus">Tanggamus</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Jumlah Anggota</label>
+                            <input type="number" id="g-anggota" required value="50" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Jumlah Pembina</label>
+                            <input type="number" id="g-pembina" required value="4" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div class="md:col-span-3">
+                            <button type="submit" class="px-6 py-2.5 bg-sako-green text-white font-bold rounded-xl hover:bg-sako-darkgreen transition text-xs">
+                                <i class="fa-solid fa-save mr-1"></i> Simpan Data Gudep
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b bg-slate-50 font-bold text-xs text-slate-700">Daftar Gugus Depan Terdaftar</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 uppercase text-[10px] text-slate-400 border-b">
+                                <tr>
+                                    <th class="p-3">Nama Sekolah</th>
+                                    <th class="p-3">No. Gudep</th>
+                                    <th class="p-3">Kabupaten/Kota</th>
+                                    <th class="p-3">Anggota / Pembina</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-gudep">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-400">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: TERBIT SERTIFIKAT -->
+            <section id="tab-sertifikat" class="tab-content space-y-6 hidden">
+                <div>
+                    <h2 class="font-heading font-extrabold text-2xl text-sako-darkgreen">Penerbitan Sertifikat QR</h2>
+                    <p class="text-xs text-slate-500">Input sertifikat resmi agar bisa diverifikasi via website</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold text-sm text-sako-darkgreen mb-4"><i class="fa-solid fa-certificate text-sako-gold mr-1"></i> Buat Sertifikat Baru</h3>
+                    <form onsubmit="addSertifikat(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block font-semibold mb-1">Nomor Sertifikat (Unik)</label>
+                            <input type="text" id="s-nomor" required placeholder="Contoh: SAKO-2026-00128" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Nama Peserta / Penerima</label>
+                            <input type="text" id="s-nama" required placeholder="Contoh: Budi Santoso, S.Pd" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Nama Kegiatan / Pelatihan</label>
+                            <input type="text" id="s-kegiatan" required placeholder="Contoh: Kemah Ukhuwah SAKO SIT 2026" class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Tanggal Terbit</label>
+                            <input type="date" id="s-tanggal" required class="w-full px-3 py-2 rounded-xl border">
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" class="px-6 py-2.5 bg-sako-gold text-sako-darkgreen font-bold rounded-xl hover:bg-amber-400 transition text-xs">
+                                <i class="fa-solid fa-check-circle mr-1"></i> Terbitkan Sertifikat
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b bg-slate-50 font-bold text-xs text-slate-700">Daftar Sertifikat Terverifikasi</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 uppercase text-[10px] text-slate-400 border-b">
+                                <tr>
+                                    <th class="p-3">No. Sertifikat</th>
+                                    <th class="p-3">Nama Peserta</th>
+                                    <th class="p-3">Kegiatan</th>
+                                    <th class="p-3">Tanggal Terbit</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-sertifikat">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-400">Memuat data...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: DATA PENDAFTAR -->
+            <section id="tab-pendaftaran" class="tab-content space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="font-heading font-extrabold text-2xl text-sako-darkgreen">Data Pendaftar Kegiatan</h2>
+                        <p class="text-xs text-slate-500">Daftar anggota yang mendaftar via form online website</p>
+                    </div>
+                    <button onclick="fetchPendaftaran()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-300 transition text-xs">
+                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Refresh Data
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-600">
+                            <thead class="bg-slate-50 uppercase text-[10px] text-slate-400 border-b">
+                                <tr>
+                                    <th class="p-3">No. Reg</th>
+                                    <th class="p-3">Nama Lengkap</th>
+                                    <th class="p-3">Sekolah</th>
+                                    <th class="p-3">Kab/Kota</th>
+                                    <th class="p-3">Tingkat</th>
+                                    <th class="p-3">WhatsApp</th>
+                                    <th class="p-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-pendaftaran">
+                                <tr><td colspan="7" class="p-4 text-center text-slate-400">Memuat data pendaftar...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT SYSTEM -->
     <script>
-        // MASUKKAN KUNCI SUPABASE ANDA DI SINI
-        const SUPABASE_URL = 'https://nzcmvlhoanfvvrgtrozo.supabase.co/rest/v1/';
-        const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const DEFAULT_PIN = "123456";
 
-        // Proteksi Kata Sandi Admin Sederhana
-const PASSWORD_ADMIN = "sako2026"; // Anda bisa mengganti kata sandi ini kapan saja
-
-if (sessionStorage.getItem("admin_login") !== "true") {
-    const inputPass = prompt("Masukkan Kata Sandi Admin SAKO SIT Lampung:");
-    if (inputPass === PASSWORD_ADMIN) {
-        sessionStorage.setItem("admin_login", "true");
-    } else {
-        alert("Kata sandi salah! Akses ditolak.");
-        window.location.href = "index.html";
-    }
-}
-
-        // Tab Switcher
-        function switchTab(tab) {
-            ['pendaftar', 'sertifikat', 'gudep'].forEach(t => {
-                document.getElementById('section-' + t).classList.add('hidden');
-                document.getElementById('tab-' + t).classList.remove('border-b-2', 'border-emerald-600', 'text-emerald-800');
-                document.getElementById('tab-' + t).classList.add('text-slate-500');
-            });
-
-            document.getElementById('section-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).classList.add('border-b-2', 'border-emerald-600', 'text-emerald-800');
-            document.getElementById('tab-' + tab).classList.remove('text-slate-500');
-
-            if (tab === 'pendaftar') loadPendaftar();
+        // Auto login jika session aktif
+        if (sessionStorage.getItem('admin_authenticated') === 'true') {
+            document.getElementById('login-modal').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            initDashboard();
         }
 
-        // Load Pendaftar
-        async function loadPendaftar() {
-            const table = document.getElementById('table-pendaftar');
-            const { data, error } = await _supabase.from('pendaftaran').select('*').order('created_at', { ascending: false });
+        function checkPin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('pin-input').value;
+            if (pin === DEFAULT_PIN) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                document.getElementById('login-modal').classList.add('hidden');
+                document.getElementById('dashboard-content').classList.remove('hidden');
+                initDashboard();
+            } else {
+                document.getElementById('pin-error').classList.remove('hidden');
+            }
+        }
 
-            if (error || !data || data.length === 0) {
-                table.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Belum ada data pendaftar.</td></tr>`;
+        function logout() {
+            sessionStorage.removeItem('admin_authenticated');
+            location.reload();
+        }
+
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-emerald-800', 'text-white');
+                el.classList.add('text-emerald-200');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-tab-${tabName}`);
+            activeBtn.classList.add('bg-emerald-800', 'text-white');
+            activeBtn.classList.remove('text-emerald-200');
+        }
+
+        function initDashboard() {
+            // Set default tanggal hari ini
+            document.getElementById('b-tanggal').valueAsDate = new Date();
+            document.getElementById('s-tanggal').valueAsDate = new Date();
+            
+            fetchBerita();
+            fetchGudep();
+            fetchSertifikat();
+            fetchPendaftaran();
+        }
+
+        // --- 1. BERITA CRUD ---
+        async function fetchBerita() {
+            const { data } = await _supabase.from('berita').select('*').order('tanggal', { ascending: false });
+            const tbody = document.getElementById('table-berita');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada berita.</td></tr>';
                 return;
             }
-
-            table.innerHTML = data.map(item => `
+            tbody.innerHTML = data.map(b => `
                 <tr class="border-b hover:bg-slate-50">
-                    <td class="p-3 font-mono font-semibold text-emerald-700">${item.no_registrasi || '-'}</td>
-                    <td class="p-3 font-semibold">${item.nama_lengkap}</td>
-                    <td class="p-3">${item.asal_sekolah}</td>
-                    <td class="p-3">${item.kabupaten}</td>
-                    <td class="p-3"><span class="bg-slate-100 px-2 py-0.5 rounded text-slate-600">${item.tingkat}</span></td>
-                    <td class="p-3"><a href="https://wa.me/${item.no_whatsapp}" target="_blank" class="text-emerald-600 hover:underline">📱 ${item.no_whatsapp}</a></td>
+                    <td class="p-3 font-semibold text-slate-800">${b.judul}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-100 text-sako-green font-bold text-[10px]">${b.kategori}</span></td>
+                    <td class="p-3">${b.tanggal}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteBerita('${b.id}')" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </td>
                 </tr>
             `).join('');
         }
 
-        // Add Sertifikat
-        async function addSertifikat(e) {
+        async function addBerita(e) {
             e.preventDefault();
-            const { error } = await _supabase.from('sertifikat').insert([{
-                nomor_sertifikat: document.getElementById('cert-num').value.trim(),
-                nama_peserta: document.getElementById('cert-name').value.trim(),
-                nama_kegiatan: document.getElementById('cert-event').value.trim(),
-                tanggal_terbit: document.getElementById('cert-date').value
-            }]);
+            const judul = document.getElementById('b-judul').value;
+            const kategori = document.getElementById('b-kategori').value;
+            const tanggal = document.getElementById('b-tanggal').value;
+            const ringkasan = document.getElementById('b-ringkasan').value;
 
-            if (error) {
-                alert('Gagal menyimpan sertifikat: ' + error.message);
-            } else {
-                alert('✅ Sertifikat berhasil ditambahkan!');
+            const { error } = await _supabase.from('berita').insert([{ judul, kategori, tanggal, ringkasan }]);
+            if (error) alert('Gagal: ' + error.message);
+            else {
+                alert('Berita berhasil ditambahkan!');
                 e.target.reset();
+                document.getElementById('b-tanggal').valueAsDate = new Date();
+                fetchBerita();
             }
         }
 
-        // Add Gudep
+        async function deleteBerita(id) {
+            if (!confirm('Yakin ingin menghapus berita ini?')) return;
+            await _supabase.from('berita').delete().eq('id', id);
+            fetchBerita();
+        }
+
+        // --- 2. GUDEP CRUD ---
+        async function fetchGudep() {
+            const { data } = await _supabase.from('gudep').select('*');
+            const tbody = document.getElementById('table-gudep');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada data Gudep.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(g => `
+                <tr class="border-b hover:bg-slate-50">
+                    <td class="p-3 font-semibold text-slate-800">${g.nama_sekolah}</td>
+                    <td class="p-3">${g.no_gudep}</td>
+                    <td class="p-3">${g.kabupaten}</td>
+                    <td class="p-3">${g.jumlah_anggota} / ${g.jumlah_pembina}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteGudep('${g.id}')" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
         async function addGudep(e) {
             e.preventDefault();
-            const { error } = await _supabase.from('gudep').insert([{
-                nama_sekolah: document.getElementById('gudep-name').value.trim(),
-                no_gudep: document.getElementById('gudep-no').value.trim(),
-                kabupaten: document.getElementById('gudep-kab').value.trim(),
-                jumlah_anggota: parseInt(document.getElementById('gudep-anggota').value) || 0,
-                jumlah_pembina: parseInt(document.getElementById('gudep-pembina').value) || 0
-            }]);
+            const nama_sekolah = document.getElementById('g-sekolah').value;
+            const no_gudep = document.getElementById('g-nogudep').value;
+            const kabupaten = document.getElementById('g-kabupaten').value;
+            const jumlah_anggota = parseInt(document.getElementById('g-anggota').value);
+            const jumlah_pembina = parseInt(document.getElementById('g-pembina').value);
 
-            if (error) {
-                alert('Gagal menyimpan Gudep: ' + error.message);
-            } else {
-                alert('✅ Gudep berhasil ditambahkan!');
+            const { error } = await _supabase.from('gudep').insert([{ nama_sekolah, no_gudep, kabupaten, jumlah_anggota, jumlah_pembina }]);
+            if (error) alert('Gagal: ' + error.message);
+            else {
+                alert('Data Gudep berhasil disimpan!');
                 e.target.reset();
+                fetchGudep();
             }
         }
 
-        // Initial Load
-        window.addEventListener('DOMContentLoaded', loadPendaftar);
+        async function deleteGudep(id) {
+            if (!confirm('Yakin ingin menghapus data Gudep ini?')) return;
+            await _supabase.from('gudep').delete().eq('id', id);
+            fetchGudep();
+        }
+
+        // --- 3. SERTIFIKAT CRUD ---
+        async function fetchSertifikat() {
+            const { data } = await _supabase.from('sertifikat').select('*').order('created_at', { ascending: false });
+            const tbody = document.getElementById('table-sertifikat');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada sertifikat.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(s => `
+                <tr class="border-b hover:bg-slate-50">
+                    <td class="p-3 font-mono font-bold text-sako-green">${s.nomor_sertifikat}</td>
+                    <td class="p-3 font-semibold text-slate-800">${s.nama_peserta}</td>
+                    <td class="p-3">${s.nama_kegiatan}</td>
+                    <td class="p-3">${s.tanggal_terbit}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteSertifikat('${s.id}')" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function addSertifikat(e) {
+            e.preventDefault();
+            const nomor_sertifikat = document.getElementById('s-nomor').value;
+            const nama_peserta = document.getElementById('s-nama').value;
+            const nama_kegiatan = document.getElementById('s-kegiatan').value;
+            const tanggal_terbit = document.getElementById('s-tanggal').value;
+
+            const { error } = await _supabase.from('sertifikat').insert([{ nomor_sertifikat, nama_peserta, nama_kegiatan, tanggal_terbit }]);
+            if (error) alert('Gagal: ' + error.message);
+            else {
+                alert('Sertifikat berhasil diterbitkan!');
+                e.target.reset();
+                document.getElementById('s-tanggal').valueAsDate = new Date();
+                fetchSertifikat();
+            }
+        }
+
+        async function deleteSertifikat(id) {
+            if (!confirm('Yakin ingin menghapus sertifikat ini?')) return;
+            await _supabase.from('sertifikat').delete().eq('id', id);
+            fetchSertifikat();
+        }
+
+        // --- 4. PENDAFTARAN READ & DELETE ---
+        async function fetchPendaftaran() {
+            const { data } = await _supabase.from('pendaftaran').select('*').order('created_at', { ascending: false });
+            const tbody = document.getElementById('table-pendaftaran');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-400">Belum ada pendaftar masuk.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(p => `
+                <tr class="border-b hover:bg-slate-50">
+                    <td class="p-3 font-mono text-sako-green font-bold">${p.no_registrasi}</td>
+                    <td class="p-3 font-semibold text-slate-800">${p.nama_lengkap}</td>
+                    <td class="p-3">${p.asal_sekolah}</td>
+                    <td class="p-3">${p.kabupaten}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-100 font-semibold">${p.tingkat}</span></td>
+                    <td class="p-3">
+                        <a href="https://wa.me/${p.no_whatsapp?.replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-600 font-bold hover:underline">
+                            <i class="fa-brands fa-whatsapp"></i> ${p.no_whatsapp}
+                        </a>
+                    </td>
+                    <td class="p-3 text-right">
+                        <button onclick="deletePendaftaran('${p.id}')" class="text-red-500 hover:text-red-700 font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function deletePendaftaran(id) {
+            if (!confirm('Yakin ingin menghapus data pendaftar ini?')) return;
+            await _supabase.from('pendaftaran').delete().eq('id', id);
+            fetchPendaftaran();
+        }
     </script>
 </body>
 </html>
