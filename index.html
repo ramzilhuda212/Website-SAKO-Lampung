@@ -48,12 +48,13 @@
             background-position: 0 0,15px 15px;
         }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const SUPABASE_URL = 'https://nzcmvlhoanfvvrgtrozo.supabase.co/rest/v1/';
-  const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
-  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-</script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = 'https://nzcmvlhoanfvvrgtrozo.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_8pYWcygUPYcksxqe2ylLRg_2RK4U58W';
+      const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    </script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-sako-gold selection:text-white">
 
@@ -80,7 +81,6 @@
     <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
                 <a href="#" class="flex items-center gap-3 group">
                     <div class="w-12 h-12 rounded-xl bg-sako-green text-sako-gold flex items-center justify-center text-2xl font-black shadow-md group-hover:scale-105 transition transform">
                         🏕️
@@ -95,54 +95,46 @@
                     </div>
                 </a>
 
-                <!-- Desktop Menu Nav -->
                 <nav class="hidden lg:flex items-center gap-1 font-medium text-sm text-slate-700">
                     <a href="#beranda" class="px-3 py-2 rounded-lg text-sako-green font-semibold bg-emerald-50">Beranda</a>
                     
-                    <!-- Dropdown Profil -->
                     <div class="relative group">
                         <button class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 flex items-center gap-1 transition">
                             Profil <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:rotate-180 transition"></i>
                         </button>
-                        <div class="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 hidden group-hover:block transition animate-fade-in">
+                        <div class="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 hidden group-hover:block transition">
                             <a href="#tentang" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Tentang SAKO</a>
                             <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Visi & Misi</a>
                             <a href="#pengurus" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Struktur Pengurus</a>
-                            <a href="#ad-art" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">AD / ART & Pedoman</a>
                         </div>
                     </div>
 
                     <a href="#gudep" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Gugus Depan</a>
-                    <a href="#agenda" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Agenda</a>
                     <a href="#berita" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Berita</a>
+                    <a href="#agenda" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Agenda</a>
                     <a href="#prestasi" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Prestasi</a>
                     <a href="#elearning" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">E-Learning</a>
                     <a href="#verifikasi" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Verifikasi QR</a>
                 </nav>
 
-                <!-- Actions -->
                 <div class="hidden lg:flex items-center gap-3">
-                    <button onclick="openModalPendaftaran()" class="px-5 py-2.5 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-sm hover:bg-sako-goldhover transition shadow-md shadow-amber-500/20 flex items-center gap-2">
+                    <button onclick="openModalPendaftaran()" class="px-5 py-2.5 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-sm hover:bg-sako-goldhover transition shadow-md flex items-center gap-2">
                         <i class="fa-solid fa-user-plus"></i> Daftar Kegiatan
                     </button>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu Drawer -->
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-100 px-4 pt-2 pb-6 space-y-2">
             <a href="#beranda" class="block px-3 py-2 rounded-lg bg-emerald-50 text-sako-green font-semibold">Beranda</a>
             <a href="#tentang" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Profil SAKO</a>
             <a href="#gudep" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Direktori Gudep</a>
-            <a href="#agenda" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Agenda Kegiatan</a>
             <a href="#berita" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Berita & Informasi</a>
-            <a href="#prestasi" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Prestasi</a>
-            <a href="#elearning" class="block px-3 py-2 rounded-lg hover:bg-slate-50">E-Learning & Quiz</a>
+            <a href="#agenda" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Agenda Kegiatan</a>
             <a href="#verifikasi" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Verifikasi Sertifikat</a>
             <div class="pt-2">
                 <button onclick="openModalPendaftaran()" class="w-full py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-center block">
@@ -152,15 +144,12 @@
         </div>
     </header>
 
-    <!-- ================= 3. HERO BANNER & COUNTDOWN ================= -->
+    <!-- ================= 3. HERO BANNER ================= -->
     <section id="beranda" class="relative pattern-bg text-white overflow-hidden py-16 lg:py-24">
-        <!-- Overlay Gradient decoration -->
         <div class="absolute inset-0 bg-gradient-to-r from-sako-darkgreen/90 via-sako-green/80 to-emerald-900/60 z-0"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Hero Left Content -->
                 <div class="lg:col-span-7 text-center lg:text-left">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-800/80 border border-emerald-500/30 text-sako-gold text-xs font-semibold mb-6">
                         <span class="w-2 h-2 rounded-full bg-sako-gold animate-pulse"></span>
@@ -176,188 +165,94 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="#agenda" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-sako-gold text-sako-darkgreen font-bold hover:bg-amber-400 transition shadow-lg shadow-amber-500/20 text-center flex items-center justify-center gap-2">
+                        <a href="#agenda" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-sako-gold text-sako-darkgreen font-bold hover:bg-amber-400 transition text-center flex items-center justify-center gap-2">
                             <i class="fa-regular fa-calendar-check"></i> Agenda Kegiatan
                         </a>
                         <a href="#tentang" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold transition text-center backdrop-blur-sm flex items-center justify-center gap-2">
                             <i class="fa-solid fa-compass"></i> Jelajahi Profil
                         </a>
                     </div>
-
-                    <!-- Live Event Countdown Widget -->
-                    <div class="mt-10 p-4 rounded-2xl bg-black/25 backdrop-blur-md border border-white/10 inline-block max-w-md w-full">
-                        <div class="text-xs text-sako-gold font-bold uppercase tracking-wider mb-2 flex items-center justify-center lg:justify-start gap-2">
-                            <i class="fa-solid fa-fire text-amber-400"></i> Acara Mendatang: Kemah Akbar SAKO SIT 2026
-                        </div>
-                        <div class="grid grid-cols-4 gap-2 text-center" id="countdown-timer">
-                            <div class="bg-emerald-900/80 p-2 rounded-lg border border-emerald-600/30">
-                                <span class="text-xl sm:text-2xl font-extrabold text-white" id="days">12</span>
-                                <span class="block text-[10px] text-slate-300 uppercase">Hari</span>
-                            </div>
-                            <div class="bg-emerald-900/80 p-2 rounded-lg border border-emerald-600/30">
-                                <span class="text-xl sm:text-2xl font-extrabold text-white" id="hours">08</span>
-                                <span class="block text-[10px] text-slate-300 uppercase">Jam</span>
-                            </div>
-                            <div class="bg-emerald-900/80 p-2 rounded-lg border border-emerald-600/30">
-                                <span class="text-xl sm:text-2xl font-extrabold text-white" id="minutes">45</span>
-                                <span class="block text-[10px] text-slate-300 uppercase">Menit</span>
-                            </div>
-                            <div class="bg-emerald-900/80 p-2 rounded-lg border border-emerald-600/30">
-                                <span class="text-xl sm:text-2xl font-extrabold text-white" id="seconds">30</span>
-                                <span class="block text-[10px] text-slate-300 uppercase">Detik</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Hero Right Cards Preview -->
                 <div class="lg:col-span-5 relative">
-                    <div class="relative mx-auto max-w-md lg:max-w-none">
-                        <!-- Card Main Container -->
-                        <div class="bg-white rounded-3xl p-6 shadow-2xl text-slate-800 border border-slate-100 space-y-5">
-                            <div class="flex items-center justify-between border-b pb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-sako-green flex items-center justify-center font-bold">
-                                        🪪
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-sm text-sako-darkgreen">Sistem Digital SAKO</h4>
-                                        <p class="text-xs text-slate-500">Akses Cepat Layanan Anggota</p>
-                                    </div>
+                    <div class="bg-white rounded-3xl p-6 shadow-2xl text-slate-800 border border-slate-100 space-y-5">
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-sako-green flex items-center justify-center font-bold">🪪</div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-sako-darkgreen">Sistem Digital SAKO</h4>
+                                    <p class="text-xs text-slate-500">Layanan Anggota Online</p>
                                 </div>
-                                <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-sako-green text-[10px] font-bold">ONLINE</span>
                             </div>
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-sako-green text-[10px] font-bold">ONLINE</span>
+                        </div>
 
-                            <!-- Digital ID Card Mini Preview -->
-                            <div class="p-4 rounded-2xl bg-gradient-to-br from-sako-darkgreen to-sako-green text-white relative overflow-hidden shadow-md">
-                                <div class="absolute -right-6 -bottom-6 text-emerald-800/40 text-8xl font-black">SAKO</div>
-                                <div class="flex justify-between items-start mb-4">
-                                    <div class="text-xs font-bold text-sako-gold">KARTU ANGGOTA DIGITAL</div>
-                                    <i class="fa-solid fa-wifi text-xs text-emerald-300"></i>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-xl bg-slate-200 border-2 border-sako-gold overflow-hidden flex-shrink-0">
-                                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" alt="Anggota" class="w-full h-full object-cover">
-                                    </div>
-                                    <div>
-                                        <div class="font-bold text-sm">AHMAD FAUZAN</div>
-                                        <div class="text-[11px] text-emerald-200">Penggalang Gudep 01.001</div>
-                                        <div class="text-[10px] font-mono text-sako-gold mt-1">ID: SAKO-001927</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Quick Action Buttons Grid -->
-                            <div class="grid grid-cols-2 gap-3 pt-1">
-                                <a href="#verifikasi" class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 transition text-left group">
-                                    <i class="fa-solid fa-qrcode text-sako-green text-lg mb-1 group-hover:scale-110 transition transform inline-block"></i>
-                                    <div class="text-xs font-bold text-slate-700">Cek Sertifikat</div>
-                                    <div class="text-[10px] text-slate-400">Verifikasi QR Code</div>
-                                </a>
-                                <a href="#gudep" class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-200 transition text-left group">
-                                    <i class="fa-solid fa-school text-sako-gold text-lg mb-1 group-hover:scale-110 transition transform inline-block"></i>
-                                    <div class="text-xs font-bold text-slate-700">Cari Gudep</div>
-                                    <div class="text-[10px] text-slate-400">127 Sekolah SIT</div>
-                                </a>
-                            </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="#verifikasi" class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 transition text-left group">
+                                <i class="fa-solid fa-qrcode text-sako-green text-lg mb-1 inline-block"></i>
+                                <div class="text-xs font-bold text-slate-700">Cek Sertifikat</div>
+                                <div class="text-[10px] text-slate-400">Verifikasi QR Code</div>
+                            </a>
+                            <a href="#gudep" class="p-3 rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-100 transition text-left group">
+                                <i class="fa-solid fa-school text-sako-gold text-lg mb-1 inline-block"></i>
+                                <div class="text-xs font-bold text-slate-700">Cari Gudep</div>
+                                <div class="text-[10px] text-slate-400">Sekolah SIT Lampung</div>
+                            </a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ================= 4. STATISTIK DASHBOARD ================= -->
-    <section class="bg-white py-12 border-b border-slate-100 relative -mt-6 z-20 max-w-6xl mx-auto rounded-2xl shadow-xl">
-        <div class="px-6 sm:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-green mb-1 counter" data-target="127">127</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gugus Depan</div>
-                </div>
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-gold mb-1 counter" data-target="542">542</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pembina</div>
-                </div>
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-green mb-1 counter" data-target="8721">8,721</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Anggota</div>
-                </div>
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-gold mb-1 counter" data-target="64">64</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sekolah SIT</div>
-                </div>
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-green mb-1 counter" data-target="183">183</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kegiatan</div>
-                </div>
-                <div class="pt-2 md:pt-0">
-                    <div class="text-3xl lg:text-4xl font-extrabold text-sako-gold mb-1 counter" data-target="326">326</div>
-                    <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Prestasi</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= 5. TENTANG & SAMBUTAN KETUA ================= -->
+    <!-- ================= 4. TENTANG SAKO ================= -->
     <section id="tentang" class="py-20 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-12 gap-12 items-center">
-                
-                <!-- Sambutan Ketua Photo & Badge -->
                 <div class="lg:col-span-5 text-center">
-                    <div class="relative inline-block">
-                        <div class="w-64 h-80 sm:w-72 sm:h-96 rounded-3xl bg-emerald-200 overflow-hidden shadow-2xl mx-auto border-4 border-white">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600" alt="Ketua SAKO SIT Lampung" class="w-full h-full object-cover">
-                        </div>
-                        <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-2xl shadow-lg border border-slate-100 text-center w-64">
-                            <div class="font-bold text-sako-darkgreen text-sm">Muslimin, M.Pd.I., Gr.</div>
-                            <div class="text-xs text-sako-gold font-semibold">Ketua SAKO Pramuka SIT Lampung</div>
-                        </div>
+                    <div class="w-64 h-80 sm:w-72 sm:h-96 rounded-3xl bg-emerald-200 overflow-hidden shadow-2xl mx-auto border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600" alt="Ketua SAKO" class="w-full h-full object-cover">
                     </div>
                 </div>
-
-                <!-- Content Text -->
                 <div class="lg:col-span-7">
-                    <div class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-sako-green text-xs font-bold uppercase tracking-wider mb-3">
+                    <div class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-sako-green text-xs font-bold uppercase mb-3">
                         Profil & Sambutan
                     </div>
                     <h2 class="font-heading font-extrabold text-2xl sm:text-4xl text-sako-darkgreen mb-6 leading-tight">
-                        Wadah Pembinaan Generasi Muda Berlandaskan Al-Qur'an dan Dasadarmo
+                        Wadah Pembinaan Generasi Muda Berlandaskan Al-Qur'an dan Dasa Darma
                     </h2>
                     <p class="text-slate-600 mb-4 leading-relaxed">
-                        <strong>Satuan Komunitas (SAKO) Pramuka Sekolah Islam Terpadu Lampung</strong> merupakan wadah pembinaan dan pengembangan kegiatan kepramukaan di lingkungan Sekolah Islam Terpadu se-Provinsi Lampung.
+                        Satuan Komunitas (SAKO) Pramuka Sekolah Islam Terpadu Lampung merupakan wadah pembinaan dan pengembangan kegiatan kepramukaan di lingkungan Sekolah Islam Terpadu se-Provinsi Lampung.
                     </p>
-                    <p class="text-slate-600 mb-6 leading-relaxed">
-                        Kami memadukan keandalan ketangkasan kepramukaan dengan nilai-nilai luhur Islam untuk membentuk pribadi peserta didik yang mandiri, berkarakter kepemimpinan Islami, berketerampilan unggul, dan siap berbakti kepada bangsa dan agama.
-                    </p>
-
-                    <!-- Features Pillars -->
-                    <div class="grid sm:grid-cols-2 gap-4 pt-2">
-                        <div class="flex items-start gap-3 p-3 rounded-xl bg-white border border-slate-100 shadow-sm">
-                            <div class="text-sako-green text-xl"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div>
-                                <h4 class="font-bold text-sm text-sako-darkgreen">Pendidikan Karakter</h4>
-                                <p class="text-xs text-slate-500">Integritas, disiplin, dan akhlakul karimah.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 p-3 rounded-xl bg-white border border-slate-100 shadow-sm">
-                            <div class="text-sako-gold text-xl"><i class="fa-solid fa-trophy"></i></div>
-                            <div>
-                                <h4 class="font-bold text-sm text-sako-darkgreen">Orientasi Prestasi</h4>
-                                <p class="text-xs text-slate-500">Mendorong kecakapan di tingkat regional & nasional.</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ================= 6. DIREKTORI GUGUS DEPAN INTERAKTIF ================= -->
-    <section id="gudep" class="py-20 bg-white border-t border-slate-100">
+    <!-- ================= 5. BERITA & INFORMASI (DARI SUPABASE) ================= -->
+    <section id="berita" class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <div class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-sako-green text-xs font-bold uppercase tracking-wider mb-2">
+                        Kabar Terkini
+                    </div>
+                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-sako-darkgreen">
+                        Berita & Pengumuman SAKO
+                    </h2>
+                </div>
+            </div>
+
+            <!-- KONTAINER BERITA DINAMIS -->
+            <div id="berita-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Data berita otomatis dimuat dari database Supabase di sini -->
+                <p class="text-slate-400 text-sm col-span-3">Memuat berita terbaru...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 6. DIREKTORI GUGUS DEPAN ================= -->
+    <section id="gudep" class="py-20 bg-slate-50 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12">
                 <div class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-sako-green text-xs font-bold uppercase tracking-wider mb-2">
@@ -366,26 +261,20 @@
                 <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-sako-darkgreen mb-4">
                     Cari & Jelajahi Gugus Depan
                 </h2>
-                <p class="text-slate-500 text-sm sm:text-base">
-                    Temukan lokasi sekolah dan Gugus Depan Pramuka SIT di seluruh Kabupaten/Kota se-Provinsi Lampung.
-                </p>
             </div>
 
-            <!-- Search Filter Bar -->
-            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-8 max-w-4xl mx-auto shadow-sm">
+            <!-- Filter Gudep -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 mb-8 max-w-4xl mx-auto shadow-sm">
                 <div class="grid sm:grid-cols-12 gap-3">
                     <div class="sm:col-span-6 relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="gudep-search" placeholder="Cari nama sekolah / nomor Gudep..." class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-sm">
+                        <input type="text" id="gudep-search" placeholder="Cari nama sekolah / nomor Gudep..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm">
                     </div>
                     <div class="sm:col-span-3">
-                        <select id="filter-kabupaten" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-sm bg-white text-slate-600">
+                        <select id="filter-kabupaten" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white text-slate-600">
                             <option value="semua">Semua Kabupaten/Kota</option>
                             <option value="Bandar Lampung">Bandar Lampung</option>
                             <option value="Metro">Metro</option>
                             <option value="Lampung Selatan">Lampung Selatan</option>
-                            <option value="Lampung Tengah">Lampung Tengah</option>
-                            <option value="Pringsewu">Pringsewu</option>
                         </select>
                     </div>
                     <div class="sm:col-span-3">
@@ -396,434 +285,89 @@
                 </div>
             </div>
 
-            <!-- Gudep Cards Grid -->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="gudep-grid">
-                <!-- Gudep Item 1 -->
-                <div class="gudep-card bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition group" data-kabupaten="Bandar Lampung">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-sako-green flex items-center justify-center text-xl font-bold">
-                            🏫
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Gudep 01.001</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-sako-darkgreen mb-1 group-hover:text-sako-green transition">SDIT Al-Kautsar</h3>
-                    <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> Bandar Lampung</p>
-                    <div class="flex justify-between items-center text-xs text-slate-600 border-t pt-4">
-                        <span><i class="fa-solid fa-users text-sako-green mr-1"></i> 140 Anggota</span>
-                        <span><i class="fa-solid fa-user-tie text-sako-gold mr-1"></i> 8 Pembina</span>
-                    </div>
-                </div>
-
-                <!-- Gudep Item 2 -->
-                <div class="gudep-card bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition group" data-kabupaten="Metro">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-sako-green flex items-center justify-center text-xl font-bold">
-                            🏫
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Gudep 02.015</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-sako-darkgreen mb-1 group-hover:text-sako-green transition">SMPIT Ulul Albab</h3>
-                    <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> Kota Metro</p>
-                    <div class="flex justify-between items-center text-xs text-slate-600 border-t pt-4">
-                        <span><i class="fa-solid fa-users text-sako-green mr-1"></i> 210 Anggota</span>
-                        <span><i class="fa-solid fa-user-tie text-sako-gold mr-1"></i> 12 Pembina</span>
-                    </div>
-                </div>
-
-                <!-- Gudep Item 3 -->
-                <div class="gudep-card bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition group" data-kabupaten="Lampung Selatan">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-sako-green flex items-center justify-center text-xl font-bold">
-                            🏫
-                        </div>
-                        <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Gudep 04.088</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-sako-darkgreen mb-1 group-hover:text-sako-green transition">SMAIT Harapan Ummah</h3>
-                    <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> Lampung Selatan</p>
-                    <div class="flex justify-between items-center text-xs text-slate-600 border-t pt-4">
-                        <span><i class="fa-solid fa-users text-sako-green mr-1"></i> 180 Anggota</span>
-                        <span><i class="fa-solid fa-user-tie text-sako-gold mr-1"></i> 10 Pembina</span>
-                    </div>
-                </div>
+                <!-- Gudep dimuat dinamis dari Supabase -->
             </div>
         </div>
     </section>
 
-    <!-- ================= 7. AGENDA & KALENDER KEGIATAN ================= -->
-    <section id="agenda" class="py-20 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
-                <div>
-                    <div class="inline-block px-3 py-1 rounded-md bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider mb-2">
-                        Kalender Acara
-                    </div>
-                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-sako-darkgreen">
-                        Agenda & Kegiatan Mendatang
-                    </h2>
-                </div>
-                <a href="#" class="mt-4 md:mt-0 text-sako-green font-bold text-sm hover:underline flex items-center gap-1">
-                    Lihat Semua Kalender <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-6">
-                <!-- Agenda Item 1 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-3 bg-sako-green text-white rounded-xl text-center min-w-[60px]">
-                                <span class="block text-xl font-extrabold leading-none">17</span>
-                                <span class="text-[10px] uppercase font-semibold tracking-wider">OKT 2026</span>
-                            </div>
-                            <div>
-                                <span class="px-2 py-0.5 rounded bg-emerald-100 text-sako-green text-[10px] font-bold uppercase">Kemah Akbar</span>
-                                <h4 class="font-bold text-sako-darkgreen text-base mt-1">Kemah Ukhuwah SAKO SIT Lampung</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">
-                            Perkemahan besar tingkat provinsi diikuti seluruh Gugus Depan Penggalang dan Penegak SIT se-Lampung.
-                        </p>
-                    </div>
-                    <div class="border-t pt-4 flex justify-between items-center text-xs">
-                        <span class="text-slate-500"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> Buper Kota Metro</span>
-                        <button onclick="openModalPendaftaran()" class="text-sako-green font-bold hover:text-sako-darkgreen">Daftar Sekarang &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- Agenda Item 2 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-3 bg-sako-gold text-sako-darkgreen rounded-xl text-center min-w-[60px]">
-                                <span class="block text-xl font-extrabold leading-none">24</span>
-                                <span class="text-[10px] uppercase font-semibold tracking-wider">OKT 2026</span>
-                            </div>
-                            <div>
-                                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold uppercase">Pelatihan</span>
-                                <h4 class="font-bold text-sako-darkgreen text-base mt-1">Kursus Mahir Dasar (KMD) Pembina</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">
-                            Pelatihan sertifikasi lisensi pembina Pramuka SIT bekerja sama dengan Kwarda Lampung.
-                        </p>
-                    </div>
-                    <div class="border-t pt-4 flex justify-between items-center text-xs">
-                        <span class="text-slate-500"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> LPMP Bandar Lampung</span>
-                        <button onclick="openModalPendaftaran()" class="text-sako-green font-bold hover:text-sako-darkgreen">Daftar Sekarang &rarr;</button>
-                    </div>
-                </div>
-
-                <!-- Agenda Item 3 -->
-                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="p-3 bg-sako-darkgreen text-white rounded-xl text-center min-w-[60px]">
-                                <span class="block text-xl font-extrabold leading-none">10</span>
-                                <span class="text-[10px] uppercase font-semibold tracking-wider">NOV 2026</span>
-                            </div>
-                            <div>
-                                <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-bold uppercase">Kompetisi</span>
-                                <h4 class="font-bold text-sako-darkgreen text-base mt-1">Scout Leadership Challenge</h4>
-                            </div>
-                        </div>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">
-                            Ajang perlombaan ketangkasan, sandi, navigasi darat, dan wawasan keislaman antar Gudep.
-                        </p>
-                    </div>
-                    <div class="border-t pt-4 flex justify-between items-center text-xs">
-                        <span class="text-slate-500"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> Kampus Itera Lampung</span>
-                        <button onclick="openModalPendaftaran()" class="text-sako-green font-bold hover:text-sako-darkgreen">Daftar Sekarang &rarr;</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= 8. VERIFIKASI SERTIFIKAT DIGITAL ================= -->
+    <!-- ================= 7. VERIFIKASI SERTIFIKAT ================= -->
     <section id="verifikasi" class="py-20 bg-sako-darkgreen text-white relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div class="w-16 h-16 rounded-2xl bg-sako-gold/20 text-sako-gold flex items-center justify-center text-2xl mx-auto mb-4 border border-sako-gold/30">
-                🏅
-            </div>
             <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-white mb-4">
                 Sistem Verifikasi Sertifikat Digital
             </h2>
-            <p class="text-slate-300 text-sm sm:text-base mb-8 max-w-xl mx-auto">
-                Pastikan keaslian sertifikat kegiatan atau penghargaan SAKO Pramuka SIT Lampung dengan memasukkan Nomor Registrasi resmi.
+            <p class="text-slate-300 text-sm mb-8">
+                Masukkan Nomor Registrasi resmi untuk mengecek keaslian sertifikat SAKO SIT Lampung.
             </p>
 
-            <!-- Verification Input Form -->
-            <div class="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/20 max-w-2xl mx-auto mb-6">
+            <div class="bg-white/10 backdrop-blur-md p-3 rounded-2xl border border-white/20 max-w-2xl mx-auto mb-6">
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="cert-code" placeholder="Contoh: SAKO-2026-00127" class="w-full px-4 py-3 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-sako-gold">
-                    <button onclick="verifyCertificate()" class="px-8 py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold hover:bg-amber-400 transition whitespace-nowrap text-sm">
-                        <i class="fa-solid fa-magnifying-glass mr-1"></i> Verifikasi Kode
+                    <input type="text" id="cert-code" placeholder="Contoh: SAKO-2026-00127" class="w-full px-4 py-3 rounded-xl text-slate-800 text-sm focus:outline-none">
+                    <button onclick="verifyCertificate()" class="px-8 py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold hover:bg-amber-400 transition text-sm">
+                        Verifikasi Kode
                     </button>
                 </div>
             </div>
 
-            <!-- Verification Result Alert Box (Hidden by default) -->
-            <div id="cert-result" class="hidden max-w-2xl mx-auto bg-white text-slate-800 p-6 rounded-2xl shadow-xl text-left border-l-8 border-emerald-500 animate-fade-in">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
-                        ✓
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-emerald-700 text-sm">Sertifikat Valid & Terverifikasi</h4>
-                        <p class="text-[11px] text-slate-400">Database Resmi SAKO SIT Lampung</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <div><span class="text-slate-400 block">Nama Peserta:</span> <strong id="res-nama" class="text-slate-700">Ahmad Fauzan</strong></div>
-                    <div><span class="text-slate-400 block">Kegiatan:</span> <strong id="res-kegiatan" class="text-slate-700">Kemah Akbar SAKO 2026</strong></div>
-                    <div><span class="text-slate-400 block">Tanggal Terbit:</span> <strong id="res-tanggal" class="text-slate-700">17 Oktober 2026</strong></div>
-                    <div><span class="text-slate-400 block">Status:</span> <strong class="text-emerald-600">VALID / SAH</strong></div>
+            <div id="cert-result" class="hidden max-w-2xl mx-auto bg-white text-slate-800 p-6 rounded-2xl shadow-xl text-left border-l-8 border-emerald-500">
+                <h4 class="font-bold text-emerald-700 text-sm mb-2">✓ Sertifikat Valid & Terverifikasi</h4>
+                <div class="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl border">
+                    <div><span class="text-slate-400 block">Nama Peserta:</span> <strong id="res-nama"></strong></div>
+                    <div><span class="text-slate-400 block">Kegiatan:</span> <strong id="res-kegiatan"></strong></div>
+                    <div><span class="text-slate-400 block">Tanggal Terbit:</span> <strong id="res-tanggal"></strong></div>
+                    <div><span class="text-slate-400 block">Status:</span> <strong class="text-emerald-600">SAH / TERDAFTAR</strong></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= 9. PRESTASI & GALERI ================= -->
-    <section id="prestasi" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <div class="inline-block px-3 py-1 rounded-md bg-amber-100 text-sako-goldhover text-xs font-bold uppercase tracking-wider mb-2">
-                    Trophy & Galeri
-                </div>
-                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-sako-darkgreen mb-4">
-                    Capaian Prestasi & Dokumen Kegiatan
-                </h2>
-                <p class="text-slate-500 text-sm sm:text-base">
-                    Bukti keandalan dan kedisiplinan peserta didik dan pembina SAKO SIT Lampung di berbagai ajang.
-                </p>
-            </div>
-
-            <!-- Gallery Grid -->
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="relative group overflow-hidden rounded-2xl shadow-md h-64 bg-slate-200">
-                    <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&q=80&w=600" alt="Kemah" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
-                        <span class="px-2 py-0.5 rounded bg-sako-gold text-sako-darkgreen text-[10px] font-bold w-max mb-1">JUARA 1</span>
-                        <h4 class="text-white font-bold text-sm">Lomba Tingkat Provinsi 2026</h4>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden rounded-2xl shadow-md h-64 bg-slate-200">
-                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600" alt="Pelatihan" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
-                        <span class="px-2 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-bold w-max mb-1">KEGIATAN</span>
-                        <h4 class="text-white font-bold text-sm">Pelatihan Pembina Mahir</h4>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden rounded-2xl shadow-md h-64 bg-slate-200">
-                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=600" alt="Bakti Sosial" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
-                        <span class="px-2 py-0.5 rounded bg-blue-500 text-white text-[10px] font-bold w-max mb-1">BAKTI SOSIAL</span>
-                        <h4 class="text-white font-bold text-sm">Aksi Tanggap Bencana SIT</h4>
-                    </div>
-                </div>
-
-                <div class="relative group overflow-hidden rounded-2xl shadow-md h-64 bg-slate-200">
-                    <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=600" alt="Jambore" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-4 flex flex-col justify-end">
-                        <span class="px-2 py-0.5 rounded bg-sako-gold text-sako-darkgreen text-[10px] font-bold w-max mb-1">JUARA 2</span>
-                        <h4 class="text-white font-bold text-sm">Scout National Competition</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= 10. E-LEARNING & QUIZ SNEAK PEEK ================= -->
-    <section id="elearning" class="py-20 bg-slate-50 border-t border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-12 gap-12 items-center">
-                
-                <div class="lg:col-span-6">
-                    <div class="inline-block px-3 py-1 rounded-md bg-emerald-100 text-sako-green text-xs font-bold uppercase tracking-wider mb-3">
-                        SAKO Learning Hub
-                    </div>
-                    <h2 class="font-heading font-extrabold text-3xl sm:text-4xl text-sako-darkgreen mb-6">
-                        E-Learning & Uji Materi Kepramukaan Online
-                    </h2>
-                    <p class="text-slate-600 mb-6 leading-relaxed">
-                        Akses modul SKU, SKK, Sandi, Semaphore, P3K, Navigasi Darat, hingga Kepemimpinan Islami langsung melalui ponsel Anda.
-                    </p>
-
-                    <!-- Feature list -->
-                    <div class="space-y-3 mb-6">
-                        <div class="flex items-center gap-3 text-sm font-semibold text-slate-700">
-                            <span class="w-6 h-6 rounded-full bg-emerald-100 text-sako-green flex items-center justify-center text-xs">✓</span> Modul Materi Interaktif & Video Praktik
-                        </div>
-                        <div class="flex items-center gap-3 text-sm font-semibold text-slate-700">
-                            <span class="w-6 h-6 rounded-full bg-emerald-100 text-sako-green flex items-center justify-center text-xs">✓</span> Bank Soal & Quiz Online
-                        </div>
-                        <div class="flex items-center gap-3 text-sm font-semibold text-slate-700">
-                            <span class="w-6 h-6 rounded-full bg-emerald-100 text-sako-green flex items-center justify-center text-xs">✓</span> Sertifikat Elektronik Setelah Lulus
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interactive Quiz Box Demo -->
-                <div class="lg:col-span-6">
-                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200" id="quiz-container">
-                        <div class="flex justify-between items-center mb-4 pb-3 border-b">
-                            <span class="text-xs font-bold text-sako-gold uppercase">📝 Simulation Quiz</span>
-                            <span class="text-xs text-slate-400">Pertanyaan 1 dari 1</span>
-                        </div>
-                        <h4 class="font-bold text-slate-800 text-base mb-4">
-                            Siapakah pendiri gerakan Kepanduan (Scout) Dunia?
-                        </h4>
-                        
-                        <div class="space-y-2 mb-6" id="quiz-options">
-                            <button onclick="checkQuiz(this, true)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-sako-green text-xs font-medium transition">
-                                A. Robert Baden-Powell
-                            </button>
-                            <button onclick="checkQuiz(this, false)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-sako-green text-xs font-medium transition">
-                                B. Ki Hajar Dewantara
-                            </button>
-                            <button onclick="checkQuiz(this, false)" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-sako-green text-xs font-medium transition">
-                                C. Jenderal Soedirman
-                            </button>
-                        </div>
-
-                        <div id="quiz-feedback" class="hidden p-3 rounded-xl text-xs font-bold text-center"></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ================= 11. FOOTER ================= -->
-    <footer class="bg-sako-darkgreen text-slate-300 pt-16 pb-8 border-t border-emerald-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-emerald-800/60">
-                
-                <!-- Col 1: About -->
-                <div class="lg:col-span-2">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-sako-green text-sako-gold flex items-center justify-center text-xl font-black">
-                            🏕️
-                        </div>
-                        <span class="font-heading font-extrabold text-lg text-white">SAKO PRAMUKA SIT LAMPUNG</span>
-                    </div>
-                    <p class="text-xs text-slate-300 leading-relaxed mb-6 max-w-sm">
-                        Satuan Komunitas Pramuka Sekolah Islam Terpadu Wilayah Lampung. Membentuk generasi muda Islami, tangguh, mandiri, dan berprestasi.
-                    </p>
-                    <div class="text-xs text-slate-400 space-y-1">
-                        <p><i class="fa-solid fa-location-dot text-sako-gold mr-2"></i> Sekretariat: Kompleks SIT Lampung, Bandar Lampung</p>
-                        <p><i class="fa-solid fa-envelope text-sako-gold mr-2"></i> info@sakositlampung.or.id</p>
-                    </div>
-                </div>
-
-                <!-- Col 2: Navigation -->
-                <div>
-                    <h5 class="text-white font-bold text-sm mb-4">Tautan Cepat</h5>
-                    <ul class="space-y-2 text-xs">
-                        <li><a href="#tentang" class="hover:text-sako-gold transition">Profil SAKO</a></li>
-                        <li><a href="#gudep" class="hover:text-sako-gold transition">Direktori Gudep</a></li>
-                        <li><a href="#agenda" class="hover:text-sako-gold transition">Agenda & Kalender</a></li>
-                        <li><a href="#prestasi" class="hover:text-sako-gold transition">Galeri Prestasi</a></li>
-                        <li><a href="#verifikasi" class="hover:text-sako-gold transition">Verifikasi Sertifikat</a></li>
-                    </ul>
-                </div>
-
-                <!-- Col 3: Documents -->
-                <div>
-                    <h5 class="text-white font-bold text-sm mb-4">Download Center</h5>
-                    <ul class="space-y-2 text-xs">
-                        <li><a href="#" class="hover:text-sako-gold transition"><i class="fa-solid fa-file-pdf mr-1 text-red-400"></i> Pedoman AD/ART</a></li>
-                        <li><a href="#" class="hover:text-sako-gold transition"><i class="fa-solid fa-file-word mr-1 text-blue-400"></i> Form Pendaftaran Gudep</a></li>
-                        <li><a href="#" class="hover:text-sako-gold transition"><i class="fa-solid fa-file-pdf mr-1 text-red-400"></i> Panduan Syarat SKU/SKK</a></li>
-                        <li><a href="#" class="hover:text-sako-gold transition"><i class="fa-solid fa-image mr-1 text-emerald-400"></i> Logo Resmi SAKO PNG</a></li>
-                    </ul>
-                </div>
-
-                <!-- Col 4: Newsletter -->
-                <div>
-                    <h5 class="text-white font-bold text-sm mb-4">Buletin SAKO</h5>
-                    <p class="text-xs text-slate-400 mb-3">Dapatkan informasi berita & pengumuman terbaru via email.</p>
-                    <form onsubmit="event.preventDefault(); alert('Terima kasih telah mendaftar buletin!');" class="space-y-2">
-                        <input type="email" placeholder="Email Anda..." required class="w-full px-3 py-2 rounded-lg bg-emerald-900/60 border border-emerald-700/50 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-sako-gold">
-                        <button type="submit" class="w-full py-2 rounded-lg bg-sako-gold text-sako-darkgreen font-bold text-xs hover:bg-amber-400 transition">
-                            Berlangganan
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-
-            <!-- Bottom Copyright -->
-            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
-                <p>&copy; 2026 SAKO Pramuka SIT Lampung. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#" class="hover:underline">Kebijakan Privasi</a>
-                    <a href="#" class="hover:underline">Syarat & Ketentuan</a>
-                </div>
-            </div>
+    <!-- ================= 8. FOOTER ================= -->
+    <footer class="bg-sako-darkgreen text-slate-300 pt-12 pb-8 border-t border-emerald-900">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+            <p>&copy; 2026 SAKO Pramuka SIT Lampung. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- ================= FLOATING WHATSAPP BUTTON ================= -->
-    <a href="https://wa.me/6281234567890" target="_blank" class="fixed bottom-6 right-6 z-40 w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl shadow-2xl transition transform hover:scale-110">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <!-- ================= MODAL PENDAFTARAN KEGIATAN ================= -->
+    <!-- ================= MODAL PENDAFTARAN ================= -->
     <div id="modal-pendaftaran" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl animate-fade-in max-h-[90vh] overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 relative shadow-2xl">
             <button onclick="closeModalPendaftaran()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-xl bg-sako-gold/20 text-sako-gold flex items-center justify-center font-bold">
-                    📝
+            <h3 class="font-bold text-lg text-sako-darkgreen mb-4">Pendaftaran Kegiatan</h3>
+
+            <form onsubmit="submitForm(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1">Nama Lengkap</label>
+                    <input type="text" required placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl border">
                 </div>
                 <div>
-                    <h3 class="font-bold text-lg text-sako-darkgreen">Pendaftaran Kegiatan</h3>
-                    <p class="text-xs text-slate-500">Isi formulir pendaftaran peserta / pembina SAKO</p>
+                    <label class="block font-semibold mb-1">Asal Sekolah</label>
+                    <input type="text" required placeholder="Nama Sekolah" class="w-full px-3 py-2 rounded-xl border">
                 </div>
-            </div>
-
-            <form onsubmit="submitForm(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Nama Lengkap</label>
-                    <input type="text" required placeholder="Masukkan nama lengkap..." class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-xs">
-                </div>
-
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Asal Sekolah / Gudep</label>
-                    <input type="text" required placeholder="Contoh: SDIT Al Kautsar" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-xs">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Kabupaten/Kota</label>
-                        <select class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-xs">
+                        <label class="block font-semibold mb-1">Kabupaten/Kota</label>
+                        <select class="w-full px-3 py-2 rounded-xl border">
                             <option>Bandar Lampung</option>
                             <option>Metro</option>
                             <option>Lampung Selatan</option>
-                            <option>Lampung Tengah</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Tingkat Peserta</label>
-                        <select class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-xs">
+                        <label class="block font-semibold mb-1">Tingkat</label>
+                        <select class="w-full px-3 py-2 rounded-xl border">
                             <option>Penggalang</option>
                             <option>Penegak</option>
                             <option>Pembina</option>
                         </select>
                     </div>
                 </div>
-
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Nomor WhatsApp Active</label>
-                    <input type="tel" required placeholder="0812xxxxxxxx" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-sako-green text-xs">
+                    <label class="block font-semibold mb-1">Nomor WhatsApp</label>
+                    <input type="tel" required placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 rounded-xl border">
                 </div>
-
                 <button type="submit" class="w-full py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-sm hover:bg-amber-400 transition mt-2">
                     Kirim Pendaftaran
                 </button>
@@ -831,73 +375,82 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT ================= -->
+    <!-- ================= SCRIPT UTAMA ================= -->
     <script>
-        // Mobile Navigation Toggle
+        // Navigasi Mobile
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // Certificate Verification Demo
-        async function verifyCertificate() {
-    const code = document.getElementById('cert-code').value.trim();
-    const resultBox = document.getElementById('cert-result');
-    
-    if (!code) {
-        alert('Silakan masukkan nomor sertifikat!');
-        return;
-    }
-
-    // Mengambil data langsung dari Supabase
-    const { data, error } = await _supabase
-        .from('sertifikat')
-        .select('*')
-        .eq('nomor_sertifikat', code)
-        .single();
-
-    if (error || !data) {
-        alert('Sertifikat tidak ditemukan atau tidak valid.');
-        resultBox.classList.add('hidden');
-        return;
-    }
-
-    // Menampilkan data jika ditemukan
-    document.getElementById('res-nama').innerText = data.nama_peserta;
-    document.getElementById('res-kegiatan').innerText = data.nama_kegiatan;
-    document.getElementById('res-tanggal').innerText = data.tanggal_terbit;
-    resultBox.classList.remove('hidden');
-}
-
-            // Mock Data Output
-            resultBox.classList.remove('hidden');
-            if (code.toUpperCase() === 'SAKO-2026-00127') {
-                document.getElementById('res-nama').innerText = "Ahmad Fauzan";
-                document.getElementById('res-kegiatan').innerText = "Kemah Akbar SAKO SIT Lampung 2026";
-                document.getElementById('res-tanggal').innerText = "17 Oktober 2026";
-            } else {
-                document.getElementById('res-nama').innerText = "Peserta SAKO SIT";
-                document.getElementById('res-kegiatan').innerText = "Kegiatan Kepramukaan Regional";
-                document.getElementById('res-tanggal').innerText = "2026";
-            }
+        if (btn) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
         }
 
-        // Quiz Interactive Demo
-        function checkQuiz(element, isCorrect) {
-            const feedback = document.getElementById('quiz-feedback');
-            feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-red-100', 'text-red-800');
-            
-            if (isCorrect) {
-                feedback.innerText = "🎉 Benar! Robert Baden-Powell adalah pendiri Pramuka Dunia.";
-                feedback.classList.add('bg-emerald-100', 'text-emerald-800');
-            } else {
-                feedback.innerText = "❌ Kurang tepat. Coba lagi!";
-                feedback.classList.add('bg-red-100', 'text-red-800');
-            }
+        // Modal Controls
+        function openModalPendaftaran() {
+            document.getElementById('modal-pendaftaran').classList.remove('hidden');
+        }
+        function closeModalPendaftaran() {
+            document.getElementById('modal-pendaftaran').classList.add('hidden');
         }
 
-        // Gudep Directory Filter
+        // 1. Load Berita dari Supabase
+        async function loadBerita() {
+            const container = document.getElementById('berita-container');
+            if (!container) return;
+
+            const { data, error } = await _supabase
+                .from('berita')
+                .select('*')
+                .order('tanggal', { ascending: false })
+                .limit(3);
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-sm col-span-3">Belum ada berita terbaru.</p>';
+                return;
+            }
+
+            container.innerHTML = data.map(b => `
+                <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition border border-slate-100 flex flex-col">
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="inline-block px-3 py-1 bg-emerald-50 text-sako-green text-xs font-bold rounded-full mb-3">${b.kategori || 'Kegiatan'}</span>
+                            <h3 class="font-bold text-lg text-sako-darkgreen mb-2 hover:text-sako-green transition cursor-pointer">${b.judul}</h3>
+                            <p class="text-slate-600 text-sm mb-4 line-clamp-3">${b.ringkasan}</p>
+                        </div>
+                        <div class="text-xs text-slate-400 border-t pt-3 flex items-center justify-between">
+                            <span>📅 ${b.tanggal}</span>
+                            <span class="text-sako-green font-semibold">SAKO SIT Lampung</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // 2. Load Gudep dari Supabase
+        async function loadGudep() {
+            const grid = document.getElementById('gudep-grid');
+            if (!grid) return;
+
+            const { data, error } = await _supabase.from('gudep').select('*');
+
+            if (error || !data || data.length === 0) return;
+
+            grid.innerHTML = data.map(g => `
+                <div class="gudep-card bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition group" data-kabupaten="${g.kabupaten}">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-sako-green flex items-center justify-center text-xl font-bold">🏫</div>
+                        <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Gudep ${g.no_gudep}</span>
+                    </div>
+                    <h3 class="font-bold text-lg text-sako-darkgreen mb-1 group-hover:text-sako-green transition">${g.nama_sekolah}</h3>
+                    <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> ${g.kabupaten}</p>
+                    <div class="flex justify-between items-center text-xs text-slate-600 border-t pt-4">
+                        <span><i class="fa-solid fa-users text-sako-green mr-1"></i> ${g.jumlah_anggota} Anggota</span>
+                        <span><i class="fa-solid fa-user-tie text-sako-gold mr-1"></i> ${g.jumlah_pembina} Pembina</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 3. Filter Gudep
         function filterGudep() {
             const kabupaten = document.getElementById('filter-kabupaten').value;
             const search = document.getElementById('gudep-search').value.toLowerCase();
@@ -906,183 +459,79 @@
             cards.forEach(card => {
                 const cardKab = card.getAttribute('data-kabupaten');
                 const text = card.innerText.toLowerCase();
-                
                 const matchKab = (kabupaten === 'semua' || cardKab === kabupaten);
                 const matchText = text.includes(search);
 
-                if (matchKab && matchText) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = (matchKab && matchText) ? 'block' : 'none';
             });
         }
 
-        // Mobile Navigation Toggle
-const btn = document.getElementById('mobile-menu-btn');
-const menu = document.getElementById('mobile-menu');
-btn.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
-});
+        // 4. Verifikasi Sertifikat
+        async function verifyCertificate() {
+            const code = document.getElementById('cert-code').value.trim();
+            const resultBox = document.getElementById('cert-result');
+            
+            if (!code) {
+                alert('Silakan masukkan nomor sertifikat!');
+                return;
+            }
 
-// 1. Verifikasi Sertifikat dari Supabase
-async function verifyCertificate() {
-    const code = document.getElementById('cert-code').value.trim();
-    const resultBox = document.getElementById('cert-result');
-    
-    if (!code) {
-        alert('Silakan masukkan nomor sertifikat!');
-        return;
-    }
+            const { data, error } = await _supabase
+                .from('sertifikat')
+                .select('*')
+                .eq('nomor_sertifikat', code)
+                .single();
 
-    const { data, error } = await _supabase
-        .from('sertifikat')
-        .select('*')
-        .eq('nomor_sertifikat', code)
-        .single();
+            if (error || !data) {
+                alert('Sertifikat tidak ditemukan atau tidak valid.');
+                resultBox.classList.add('hidden');
+                return;
+            }
 
-    if (error || !data) {
-        alert('Sertifikat tidak ditemukan atau tidak valid.');
-        resultBox.classList.add('hidden');
-        return;
-    }
-
-    document.getElementById('res-nama').innerText = data.nama_peserta;
-    document.getElementById('res-kegiatan').innerText = data.nama_kegiatan;
-    document.getElementById('res-tanggal').innerText = data.tanggal_terbit;
-    resultBox.classList.remove('hidden');
-}
-
-// 2. Simpan Formulir Pendaftaran Kegiatan ke Supabase
-async function submitForm(e) {
-    e.preventDefault();
-    const form = e.target;
-    const inputs = form.querySelectorAll('input, select');
-    
-    const nama = inputs[0].value;
-    const sekolah = inputs[1].value;
-    const kabupaten = inputs[2].value;
-    const tingkat = inputs[3].value;
-    const wa = inputs[4].value;
-    const noReg = 'SAKO-2026-' + Math.floor(10000 + Math.random() * 90000);
-
-    const { error } = await _supabase
-        .from('pendaftaran')
-        .insert([{
-            nama_lengkap: nama,
-            asal_sekolah: sekolah,
-            kabupaten: kabupaten,
-            tingkat: tingkat,
-            no_whatsapp: wa,
-            no_registrasi: noReg
-        }]);
-
-    if (error) {
-        alert('Gagal menyimpan pendaftaran: ' + error.message);
-    } else {
-        alert('🎉 Pendaftaran Berhasil!\n\nNomor Registrasi Anda: ' + noReg);
-        form.reset();
-        closeModalPendaftaran();
-    }
-}
-
-// 3. Memuat Data Gudep dari Supabase
-async function loadGudep() {
-    const grid = document.getElementById('gudep-grid');
-    const { data, error } = await _supabase.from('gudep').select('*');
-
-    if (error || !data || data.length === 0) return;
-
-    grid.innerHTML = data.map(g => `
-        <div class="gudep-card bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-lg transition group" data-kabupaten="${g.kabupaten}">
-            <div class="flex justify-between items-start mb-4">
-                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-sako-green flex items-center justify-center text-xl font-bold">
-                    🏫
-                </div>
-                <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">Gudep ${g.no_gudep}</span>
-            </div>
-            <h3 class="font-bold text-lg text-sako-darkgreen mb-1 group-hover:text-sako-green transition">${g.nama_sekolah}</h3>
-            <p class="text-xs text-slate-500 mb-4"><i class="fa-solid fa-location-dot text-sako-gold mr-1"></i> ${g.kabupaten}</p>
-            <div class="flex justify-between items-center text-xs text-slate-600 border-t pt-4">
-                <span><i class="fa-solid fa-users text-sako-green mr-1"></i> ${g.jumlah_anggota} Anggota</span>
-                <span><i class="fa-solid fa-user-tie text-sako-gold mr-1"></i> ${g.jumlah_pembina} Pembina</span>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Filter Gudep lokal
-function filterGudep() {
-    const kabupaten = document.getElementById('filter-kabupaten').value;
-    const search = document.getElementById('gudep-search').value.toLowerCase();
-    const cards = document.querySelectorAll('.gudep-card');
-
-    cards.forEach(card => {
-        const cardKab = card.getAttribute('data-kabupaten');
-        const text = card.innerText.toLowerCase();
-        
-        const matchKab = (kabupaten === 'semua' || cardKab === kabupaten);
-        const matchText = text.includes(search);
-
-        if (matchKab && matchText) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
+            document.getElementById('res-nama').innerText = data.nama_peserta;
+            document.getElementById('res-kegiatan').innerText = data.nama_kegiatan;
+            document.getElementById('res-tanggal').innerText = data.tanggal_terbit;
+            resultBox.classList.remove('hidden');
         }
-    });
-}
 
-// Modal Controls
-function openModalPendaftaran() {
-    document.getElementById('modal-pendaftaran').classList.remove('hidden');
-}
+        // 5. Submit Form Pendaftaran
+        async function submitForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const inputs = form.querySelectorAll('input, select');
+            
+            const nama = inputs[0].value;
+            const sekolah = inputs[1].value;
+            const kabupaten = inputs[2].value;
+            const tingkat = inputs[3].value;
+            const wa = inputs[4].value;
+            const noReg = 'SAKO-2026-' + Math.floor(10000 + Math.random() * 90000);
 
-function closeModalPendaftaran() {
-    document.getElementById('modal-pendaftaran').classList.add('hidden');
-}
+            const { error } = await _supabase
+                .from('pendaftaran')
+                .insert([{
+                    nama_lengkap: nama,
+                    asal_sekolah: sekolah,
+                    kabupaten: kabupaten,
+                    tingkat: tingkat,
+                    no_whatsapp: wa,
+                    no_registrasi: noReg
+                }]);
 
-// ... (kode fungsi filterGudep, submitForm, dll. di atasnya tetap biarkan)
+            if (error) {
+                alert('Gagal menyimpan pendaftaran: ' + error.message);
+            } else {
+                alert('🎉 Pendaftaran Berhasil!\n\nNomor Registrasi Anda: ' + noReg);
+                form.reset();
+                closeModalPendaftaran();
+            }
+        }
 
-    // ================= TEMPEL KODE LANGKAH 9 DI SINI =================
-    async function loadBerita() {
-        const container = document.getElementById('berita-container');
-        if (!container) return;
-
-        const { data, error } = await _supabase
-            .from('berita')
-            .select('*')
-            .order('tanggal', { ascending: false })
-            .limit(3);
-
-        if (error || !data || data.length === 0) return;
-
-        container.innerHTML = data.map(b => `
-            <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition border border-slate-100 flex flex-col">
-                <div class="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                        <span class="inline-block px-3 py-1 bg-emerald-50 text-sako-green text-xs font-bold rounded-full mb-3">${b.kategori}</span>
-                        <h3 class="font-bold text-lg text-sako-darkgreen mb-2 hover:text-sako-green transition cursor-pointer">${b.judul}</h3>
-                        <p class="text-slate-600 text-sm mb-4 line-clamp-3">${b.ringkasan}</p>
-                    </div>
-                    <div class="text-xs text-slate-400 border-t pt-3 flex items-center justify-between">
-                        <span>📅 ${b.tanggal}</span>
-                        <span class="text-sako-green font-semibold">SAKO SIT Lampung</span>
-                    </div>
-                </div>
-            </article>
-        `).join('');
-    }
-
-    // Panggil kedua fungsi (Gudep & Berita) saat halaman selesai dimuat:
-    window.addEventListener('DOMContentLoaded', () => {
-        loadGudep();
-        loadBerita();
-    });
-    // ================================================================
-
-</script>
-</body>
-</html>
+        // Inisialisasi Saat Halaman Dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadGudep();
+            loadBerita();
+        });
     </script>
 </body>
 </html>
