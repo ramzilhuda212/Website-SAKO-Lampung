@@ -68,6 +68,9 @@
                 <span class="hidden lg:inline text-slate-300"><i class="fa-solid fa-location-dot text-sako-gold mr-1.5"></i> Bandar Lampung, Indonesia</span>
             </div>
             <div class="flex items-center gap-3">
+                <a href="admin.html" class="px-2.5 py-1 rounded-md bg-emerald-800/80 hover:bg-sako-gold hover:text-sako-darkgreen text-sako-gold font-bold transition flex items-center gap-1 border border-emerald-600/30 mr-2">
+                    <i class="fa-solid fa-user-lock"></i> Portal Admin
+                </a>
                 <span class="text-emerald-300 hidden sm:inline">Ikuti Kami:</span>
                 <a href="#" class="w-6 h-6 rounded-full bg-emerald-900/80 hover:bg-sako-gold hover:text-sako-darkgreen flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
                 <a href="#" class="w-6 h-6 rounded-full bg-emerald-900/80 hover:bg-sako-gold hover:text-sako-darkgreen flex items-center justify-center transition"><i class="fa-brands fa-youtube"></i></a>
@@ -104,14 +107,12 @@
                         </button>
                         <div class="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2 hidden group-hover:block transition">
                             <a href="#tentang" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Tentang SAKO</a>
-                            <a href="#visi-misi" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Visi & Misi</a>
-                            <a href="#pengurus" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Struktur Pengurus</a>
+                            <a href="#tentang" class="block px-4 py-2 text-sm hover:bg-emerald-50 hover:text-sako-green">Visi & Misi</a>
                         </div>
                     </div>
 
                     <a href="#gudep" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Gugus Depan</a>
                     <a href="#berita" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Berita</a>
-                    <a href="#agenda" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Agenda</a>
                     <a href="#verifikasi" class="px-3 py-2 rounded-lg hover:text-sako-green hover:bg-slate-50 transition">Verifikasi Sertifikat</a>
                 </nav>
 
@@ -133,6 +134,7 @@
             <a href="#gudep" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Direktori Gudep</a>
             <a href="#berita" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Berita & Informasi</a>
             <a href="#verifikasi" class="block px-3 py-2 rounded-lg hover:bg-slate-50">Verifikasi Sertifikat</a>
+            <a href="admin.html" class="block px-3 py-2 rounded-lg text-sako-gold font-bold hover:bg-slate-50">Portal Admin</a>
             <div class="pt-2">
                 <button onclick="openModalPendaftaran()" class="w-full py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-center block">
                     <i class="fa-solid fa-user-plus mr-1"></i> Daftar Kegiatan
@@ -325,8 +327,9 @@
 
     <!-- ================= 8. FOOTER ================= -->
     <footer class="bg-sako-darkgreen text-slate-300 pt-12 pb-8 border-t border-emerald-900">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 space-y-2">
             <p>&copy; 2026 SAKO Pramuka SIT Lampung. All rights reserved.</p>
+            <p><a href="admin.html" class="hover:text-sako-gold transition underline">Akses Portal Admin Pengurus</a></p>
         </div>
     </footer>
 
@@ -341,16 +344,16 @@
             <form onsubmit="submitForm(event)" class="space-y-3 text-xs">
                 <div>
                     <label class="block font-semibold mb-1">Nama Lengkap</label>
-                    <input type="text" required placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl border">
+                    <input type="text" id="reg-nama" required placeholder="Nama Anda" class="w-full px-3 py-2 rounded-xl border">
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">Asal Sekolah</label>
-                    <input type="text" required placeholder="Nama Sekolah" class="w-full px-3 py-2 rounded-xl border">
+                    <input type="text" id="reg-sekolah" required placeholder="Nama Sekolah" class="w-full px-3 py-2 rounded-xl border">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-semibold mb-1">Kabupaten/Kota</label>
-                        <select class="w-full px-3 py-2 rounded-xl border">
+                        <select id="reg-kabupaten" class="w-full px-3 py-2 rounded-xl border">
                             <option>Bandar Lampung</option>
                             <option>Metro</option>
                             <option>Lampung Selatan</option>
@@ -360,7 +363,7 @@
                     </div>
                     <div>
                         <label class="block font-semibold mb-1">Tingkat</label>
-                        <select class="w-full px-3 py-2 rounded-xl border">
+                        <select id="reg-tingkat" class="w-full px-3 py-2 rounded-xl border">
                             <option>Penggalang</option>
                             <option>Penegak</option>
                             <option>Pembina</option>
@@ -369,9 +372,9 @@
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">Nomor WhatsApp</label>
-                    <input type="tel" required placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 rounded-xl border">
+                    <input type="tel" id="reg-wa" required placeholder="08xxxxxxxxxx" class="w-full px-3 py-2 rounded-xl border">
                 </div>
-                <button type="submit" class="w-full py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-sm hover:bg-amber-400 transition mt-2">
+                <button type="submit" id="btn-submit-reg" class="w-full py-3 rounded-xl bg-sako-gold text-sako-darkgreen font-bold text-sm hover:bg-amber-400 transition mt-2">
                     Kirim Pendaftaran
                 </button>
             </form>
@@ -395,7 +398,7 @@
             document.getElementById('modal-pendaftaran').classList.add('hidden');
         }
 
-        // 1. Load Berita dengan Foto dari Supabase
+        // 1. Load Berita dari Supabase
         async function loadBerita() {
             const container = document.getElementById('berita-container');
             if (!container) return;
@@ -403,11 +406,11 @@
             const { data, error } = await _supabase
                 .from('berita')
                 .select('*')
-                .order('tanggal', { ascending: false })
+                .order('id', { ascending: false })
                 .limit(6);
 
             if (error || !data || data.length === 0) {
-                container.innerHTML = '<p class="text-slate-400 text-sm col-span-3">Belum ada berita terbaru.</p>';
+                container.innerHTML = '<p class="text-slate-400 text-sm col-span-3">Belum ada berita terbaru yang dipublikasikan.</p>';
                 return;
             }
 
@@ -434,12 +437,12 @@
             `).join('');
         }
 
-        // 2. Load Gudep dengan Logo Sekolah dari Supabase
+        // 2. Load Gudep dari Supabase
         async function loadGudep() {
             const grid = document.getElementById('gudep-grid');
             if (!grid) return;
 
-            const { data, error } = await _supabase.from('gudep').select('*');
+            const { data, error } = await _supabase.from('gudep').select('*').order('id', { ascending: false });
 
             if (error || !data || data.length === 0) {
                 grid.innerHTML = '<p class="text-slate-400 text-sm col-span-3 text-center">Belum ada data Gudep.</p>';
@@ -481,7 +484,7 @@
             });
         }
 
-        // 4. Verifikasi & Auto-Generate Sertifikat via HTML5 Canvas
+        // 4. Verifikasi & Auto-Generate Sertifikat
         async function verifyCertificate() {
             const code = document.getElementById('cert-code').value.trim();
             const resultBox = document.getElementById('cert-result');
@@ -507,7 +510,6 @@
             document.getElementById('res-kegiatan').innerText = data.nama_kegiatan;
             document.getElementById('res-tanggal').innerText = data.tanggal_terbit;
             
-            // Pasang fungsi auto-generate saat tombol di-klik
             const btnDownload = document.getElementById('btn-download-cert');
             btnDownload.onclick = () => downloadCertificate(data.nama_peserta, data.nomor_sertifikat, data.nama_kegiatan, data.template_url);
 
@@ -517,34 +519,29 @@
         function downloadCertificate(nama, nomor, kegiatan, templateUrl) {
             const canvas = document.createElement('canvas');
             canvas.width = 1600;
-            canvas.height = 1131; // Ukuran A4 Landscape
+            canvas.height = 1131;
             const ctx = canvas.getContext('2d');
 
             const img = new Image();
             img.crossOrigin = "Anonymous";
-            // Template default jika tidak di-input oleh admin
             img.src = templateUrl || "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1600";
 
             img.onload = () => {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                // Render Nama Peserta
                 ctx.font = "bold 52px 'Plus Jakarta Sans', sans-serif";
                 ctx.fillStyle = "#0f5b35";
                 ctx.textAlign = "center";
                 ctx.fillText(nama, canvas.width / 2, 520);
 
-                // Render Nama Kegiatan
                 ctx.font = "28px 'Plus Jakarta Sans', sans-serif";
                 ctx.fillStyle = "#333333";
                 ctx.fillText("Atas partisipasinya dalam " + kegiatan, canvas.width / 2, 600);
 
-                // Render Nomor Sertifikat
                 ctx.font = "bold 22px monospace";
                 ctx.fillStyle = "#555555";
                 ctx.fillText("No. Reg: " + nomor, canvas.width / 2, 680);
 
-                // Trigger Download Otomatis
                 const link = document.createElement('a');
                 link.download = `Sertifikat_${nama.replace(/\s+/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png');
@@ -559,34 +556,32 @@
         // 5. Submit Form Pendaftaran
         async function submitForm(e) {
             e.preventDefault();
-            const form = e.target;
-            const inputs = form.querySelectorAll('input, select');
-            
-            const nama = inputs[0].value;
-            const sekolah = inputs[1].value;
-            const kabupaten = inputs[2].value;
-            const tingkat = inputs[3].value;
-            const wa = inputs[4].value;
-            const noReg = 'SAKO-2026-' + Math.floor(10000 + Math.random() * 90000);
+            const btn = document.getElementById('btn-submit-reg');
+            btn.disabled = true;
+            btn.innerText = 'Mengirim...';
 
-            const { error } = await _supabase
-                .from('pendaftaran')
-                .insert([{
-                    nama_lengkap: nama,
-                    asal_sekolah: sekolah,
-                    kabupaten: kabupaten,
-                    tingkat: tingkat,
-                    no_whatsapp: wa,
-                    no_registrasi: noReg
-                }]);
+            const noReg = 'SAKO-2026-' + Math.floor(10000 + Math.random() * 90000);
+            const payload = {
+                nama_lengkap: document.getElementById('reg-nama').value,
+                asal_sekolah: document.getElementById('reg-sekolah').value,
+                kabupaten: document.getElementById('reg-kabupaten').value,
+                tingkat: document.getElementById('reg-tingkat').value,
+                no_whatsapp: document.getElementById('reg-wa').value,
+                no_registrasi: noReg
+            };
+
+            const { error } = await _supabase.from('pendaftaran').insert([payload]);
 
             if (error) {
                 alert('Gagal menyimpan pendaftaran: ' + error.message);
             } else {
                 alert('🎉 Pendaftaran Berhasil!\n\nNomor Registrasi Anda: ' + noReg);
-                form.reset();
+                e.target.reset();
                 closeModalPendaftaran();
             }
+
+            btn.disabled = false;
+            btn.innerText = 'Kirim Pendaftaran';
         }
 
         // Inisialisasi Halaman
